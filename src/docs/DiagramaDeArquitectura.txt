@@ -1,0 +1,46 @@
+@startuml
+title Sistema de Gestión de Tareas Ágil - Diagrama de Componentes
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam defaultTextAlignment center
+
+' ====== Capas con color ======
+package "Capa de Presentación" #E3F2FD {
+  [Frontend\n(HTML / CSS / JS)] as FE <<Componente>>
+}
+
+package "Capa de Lógica de Negocio" #FFF3E0 {
+  [Gestor de Autenticación] as AUTH <<Componente>>
+  [Gestor de Tablero Kanban] as KANBAN <<Componente>>
+  [Gestor de Tareas] as TASKS <<Componente>>
+}
+
+package "Capa de Datos" #E8F5E9 {
+  database "Almacenamiento\n(LocalStorage)" as STORE <<Datos>>
+}
+
+' ====== Relaciones principales ======
+FE --> AUTH   : iniciar sesión / obtener token
+FE --> KANBAN : ver/actualizar tableros (drag & drop)
+FE --> TASKS  : CRUD de tareas
+
+KANBAN --> TASKS : organizar tareas por columnas/estados
+
+' Persistencia
+AUTH  --> STORE : guardar/leer credenciales/tokens
+TASKS --> STORE : guardar/leer tareas
+KANBAN --> STORE: guardar/leer columnas/orden
+
+' Opcional: uso de autenticación por otros gestores
+AUTH ..> KANBAN : validar/autorización
+AUTH ..> TASKS  : validar/autorización
+
+' ====== Leyenda ======
+legend left
+|= Color |= Capa |
+|<#E3F2FD>     | Presentación (UI) |
+|<#FFF3E0>     | Lógica de negocio |
+|<#E8F5E9>     | Datos/Persistencia |
+endlegend
+@enduml
