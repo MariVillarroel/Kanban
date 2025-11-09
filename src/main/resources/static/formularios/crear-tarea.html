@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Tarea</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        input[type="date"] {
+            padding: 6px;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 3px;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .success {
+            color: green;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Crear Tarea</h2>
+        <form id="taskForm" novalidate>
+            <label for="title">Título</label>
+            <input type="text" id="title" name="title" required maxlength="100">
+            <div id="titleError" class="error"></div>
+
+            <label for="description">Descripción</label>
+            <textarea id="description" name="description" required maxlength="500"></textarea>
+            <div id="descriptionError" class="error"></div>
+
+            <label for="dueDate">Fecha límite</label>
+            <input type="date" id="dueDate" name="dueDate" required>
+            <div id="dateError" class="error"></div>
+
+            <button type="submit">Crear Tarea</button>
+            <div id="successMessage" class="success"></div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('taskForm');
+        const titleInput = document.getElementById('title');
+        const descriptionInput = document.getElementById('description');
+        const dueDateInput = document.getElementById('dueDate');
+
+        const titleError = document.getElementById('titleError');
+        const descriptionError = document.getElementById('descriptionError');
+        const dateError = document.getElementById('dateError');
+        const successMessage = document.getElementById('successMessage');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let valid = true;
+
+            // Limpiar errores previos
+            titleError.textContent = '';
+            descriptionError.textContent = '';
+            dateError.textContent = '';
+            successMessage.textContent = '';
+
+            // Validar título
+            if (!titleInput.value.trim()) {
+                titleError.textContent = 'El título es obligatorio';
+                valid = false;
+            }
+
+            // Validar descripción
+            if (!descriptionInput.value.trim()) {
+                descriptionError.textContent = 'La descripción es obligatoria';
+                valid = false;
+            }
+
+            // Validar fecha límite
+            const today = new Date();
+            const dueDate = new Date(dueDateInput.value);
+            if (!dueDateInput.value) {
+                dateError.textContent = 'La fecha límite es obligatoria';
+                valid = false;
+            } else if (dueDate < today.setHours(0,0,0,0)) {
+                dateError.textContent = 'La fecha límite debe ser hoy o posterior';
+                valid = false;
+            }
+
+            if (valid) {
+                successMessage.textContent = '¡Tarea lista para enviar al backend!';
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>
