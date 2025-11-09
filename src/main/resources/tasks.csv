@@ -1,0 +1,6 @@
+id,titulo,descripcion,fechaLimite,estado,creador,createdAt,updatedAt
+1,Organizar reunión semanal,Preparar agenda y enviar invitaciones,2025-11-15,Por hacer,usuario1,2025-11-09T18:10,2025-11-09T18:10
+2,Desarrollar módulo login,Implementar pantalla y lógica de autenticación,2025-11-20,Por hacer,usuario2,2025-11-09T18:15,2025-11-09T18:15
+3,Revisar documentación Kanban,Leer y comentar guía interna,2025-11-22,En progreso,usuario3,2025-11-09T18:30,2025-11-09T18:30
+4,Organizar reunión,Reunión Kanban semanal,2025-12-01,Por hacer,user1,2025-11-09T18:30,2025-11-09T18:30
+5,Organizar reunión,Reunión Kanban semanal,2025-12-01,Por hacer,user1,2025-11-09T18:30,2025-11-09T18:30
