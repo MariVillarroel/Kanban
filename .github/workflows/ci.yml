@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, feature/** ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build & Test
+        run: mvn -B verify
+
+      - name: Fail if coverage below threshold
+        run: |
+          COV=$(grep -Po 'INSTRUCTION.*?coveredratio="\K[0-9.]+(?=" )' target/site/jacoco/jacoco.xml | head -1)
+          echo "Coverage: $COV"
+          awk -v c=$COV 'BEGIN { if (c < 0.85) { print "Coverage below 85%"; exit 1 } }'
+
+      - name: Publish JaCoCo Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+
+      - name: Upload Test Results (Surefire)
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/

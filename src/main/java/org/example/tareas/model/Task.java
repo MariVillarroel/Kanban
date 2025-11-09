@@ -30,6 +30,10 @@ public class Task {
   @Column(nullable = false, length = 20)
   private TaskStatus estado = TaskStatus.PENDIENTE;
 
+  // Usuario asignado (simple: almacenamos solo el ID para evitar dependencia circular)
+  @Column(name = "assigned_user_id")
+  private Long assignedUserId;
+
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
   private OffsetDateTime creadoEn;
@@ -55,4 +59,7 @@ public class Task {
   public void setEstado(TaskStatus estado) { this.estado = estado; }
   public OffsetDateTime getCreadoEn() { return creadoEn; }
   public OffsetDateTime getActualizadoEn() { return actualizadoEn; }
+
+  public Long getAssignedUserId() { return assignedUserId; }
+  public void setAssignedUserId(Long assignedUserId) { this.assignedUserId = assignedUserId; }
 }
