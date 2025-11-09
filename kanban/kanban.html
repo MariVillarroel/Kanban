@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="kanban.css" />
+  </head>
+  <body>
+    <h1>Tablero Kanban</h1>
+    <div id="board">
+      <div class="column" id="todo">
+        <h2>Por hacer</h2>
+        <div class="tasks"></div>
+      </div>
+      <div class="column" id="inprogress">
+        <h2>En Progreso</h2>
+        <div class="tasks"></div>
+      </div>
+      <div class="column" id="done">
+        <h2>Hecho</h2>
+        <div class="tasks"></div>
+      </div>
+    </div>
+
+    <!-- Modal Asignar responsable -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <h3>Asignar responsable</h3>
+        <input
+          id="inputResponsable"
+          type="text"
+          placeholder="Nombre responsable"
+        />
+        <button id="saveResponsableBtn">Guardar</button>
+      </div>
+    </div>
+
+    <script src="kanban.js"></script>
+  </body>
+</html>
