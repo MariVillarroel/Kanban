@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Verifica tu correo</title>
+<link rel="stylesheet" href="/static/verify.css"/>
+<style>
+body { font-family: system-ui, Arial; display:grid; place-items:center; height:100dvh; background:#0f172a; color:#e2e8f0; margin:0;}
+.card { background:#111827; padding:24px; border-radius:16px; width:min(560px,90vw); box-shadow:0 10px 30px rgba(0,0,0,.3); }
+h1 { margin:0 0 12px; font-size:1.5rem;}
+.success { color:#22c55e;}
+.error { color:#ef4444;}
+a { color:#93c5fd; }
+</style>
+</head><body>
+  <main class="card">
+    <h1>Verifica tu correo</h1>
+    <p id="status">Procesando tu verificación…</p>
+    <a id="goLogin" href="/login" style="display:none;">Ir a iniciar sesión</a>
+  </main>
+<script>
+(async () => {
+  const el = document.getElementById('status');
+  const go = document.getElementById('goLogin');
+  const params = new URLSearchParams(location.search);
+  const token = params.get('token');
+
+  if (!token) { el.textContent = 'Falta el token de verificación.'; el.className='error'; return; }
+
+  try {
+    const res = await fetch('/api/auth/confirm?token=' + encodeURIComponent(token), { method:'POST' });
+    if (res.ok) {
+      el.textContent = '¡Tu cuenta fue activada correctamente!'; el.className='success'; go.style.display='inline-block';
+    } else {
+      const data = await res.json().catch(() => ({}));
+      el.textContent = (data?.error?.message) || 'Token inválido o expirado.'; el.className='error';
+    }
+  } catch (e) {
+    el.textContent = 'No se pudo completar la verificación. Intenta más tarde.'; el.className='error';
+  }
+})();
+</script>
+</body></html>
